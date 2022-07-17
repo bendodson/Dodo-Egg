@@ -1,6 +1,7 @@
 // Developed by Ben Dodson (ben@bendodson.com)
 
 import Foundation
+import os.log
 
 public protocol APIClient: AnyObject {
     var activeTasks: Set<URLSessionDataTask> { get set }
@@ -35,9 +36,7 @@ extension APIClient {
 
     public func send<T: APIRequest>(_ request: T, onCompletion completionHandler: @escaping APIHandler) {
         let url = endpoint(for: request)
-        
-        #warning("NEED SOME SORT OF LOGGING SYSTEM")
-        //writeLog("Network request: \(url)")
+        os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, url as CVarArg)
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -64,8 +63,7 @@ extension APIClient {
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
                 if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    #warning("Logging required")
-                    //writeLog("\(request.requestType.rawValue): \(string)")
+                    os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, string)
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
