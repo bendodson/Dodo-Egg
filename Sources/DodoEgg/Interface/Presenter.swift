@@ -4,12 +4,12 @@ import UIKit
 
 public protocol Presenter {
     func instance() -> UIViewController
-    func instanceInNavigationController() -> BaseNavigationController
+    func instanceInNavigationController() -> UINavigationController
     func present(from viewController: UIViewController)
 }
 
 extension Presenter {
-    public func instanceInNavigationController() -> BaseNavigationController {
+    public func instanceInNavigationController() -> UINavigationController {
         return BaseNavigationController(rootViewController: instance())
     }
     
