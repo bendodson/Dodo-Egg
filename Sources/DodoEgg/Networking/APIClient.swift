@@ -56,7 +56,7 @@ extension APIClient {
                     do {
                         urlRequest.httpBody = try JSONEncoder().encode(parameters)
                     } catch {
-                        #warning("Need better error handling")
+                        fatalError("Can't encode HTTP body")
                     }
                 } else {
                     let postParameters = try URLQueryItemEncoder.encode(parameters)
