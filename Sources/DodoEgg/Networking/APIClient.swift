@@ -8,6 +8,7 @@ public protocol APIClient: AnyObject {
     static var endpoint: String { get }
     var defaultQueryStringParameters: [URLQueryItem] { get }
     var defaultHeaders: [String: String] { get }
+    var includeTrailingSlash: Bool { get }
 }
 
 public typealias APIResponse = Result<Data?, APIError>
@@ -19,6 +20,10 @@ extension APIClient {
     
     public var defaultHeaders: [String: String] {
         return [:]
+    }
+    
+    public var includeTrailingSlash: Bool {
+        return true
     }
     
     public var baseEndpoint: URL {
@@ -91,7 +96,7 @@ extension APIClient {
                 switch httpResponse.statusCode {
                 case 200:
                     completionHandler(.success(data))
-                case 201, 204:
+                case 201...204:
                     completionHandler(.success(nil))
                 case 400...499:
                     completionHandler(.failure(.request(response: data)))
@@ -107,7 +112,7 @@ extension APIClient {
     }
     
     public func endpoint<T: APIRequest>(for request: T) -> URL {
-        guard let baseUrl = URL(string: baseEndpoint.absoluteString + request.resourceName + "/") else {
+        guard let baseUrl = URL(string: baseEndpoint.absoluteString + request.resourceName + (includeTrailingSlash ? "/" : "")) else {
             fatalError("Unable to create baseUrl: \(request.resourceName)")
         }
         var components = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true) ?? URLComponents()
