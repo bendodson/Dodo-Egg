@@ -5,5 +5,5 @@ import os.log
 
 extension OSLog {
     public static var subsystem = Bundle.main.bundleIdentifier!
-    static let networking = OSLog(subsystem: subsystem, category: "networking")
+    public static let networking = OSLog(subsystem: subsystem, category: "networking")
 }
