@@ -9,7 +9,8 @@ public protocol ReusableCell {
 extension ReusableCell {
     
     public static func register(_ tableView: UITableView) {
-        let identifier = String(describing: self)
+        // Separating by < so we can catch generic implementations i.e. CardTableViewCell<Treasure>
+        let identifier = String(describing: self).components(separatedBy: "<")[0]
         tableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
     }
     
