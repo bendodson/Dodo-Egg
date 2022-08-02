@@ -9,9 +9,8 @@ public protocol ReusableCell {
 extension ReusableCell {
     
     public static func register(_ tableView: UITableView) {
-        // Separating by < so we can catch generic implementations i.e. CardTableViewCell<Treasure>
         let identifier = String(describing: self)
-        tableView.register(UINib(nibName: identifier.components(separatedBy: "<")[0], bundle: nil), forCellReuseIdentifier: identifier)
+        tableView.register(UINib(nibName: identifier, bundle: nil), forCellReuseIdentifier: identifier)
     }
     
     public static func dequeue(_ tableView: UITableView, indexPath: IndexPath) -> Self {
