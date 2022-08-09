@@ -8,10 +8,11 @@ public enum APIRequestType: String {
     case delete = "DELETE"
 }
 
-public protocol APIRequest {
+public protocol APIRequest: Hashable {
     associatedtype QueryStringParameters: Encodable
     associatedtype PostParameters: Encodable
-    
+
+    var identifier: String { get }
     var requestType: APIRequestType { get }
     var resourceName: String { get }
     var queryStringParameters: QueryStringParameters? { get }
@@ -20,6 +21,10 @@ public protocol APIRequest {
 }
 
 extension APIRequest {
+
+    public var identifier: String {
+        return UUID().uuidString
+    }
     
     public var requestType: APIRequestType {
         return .get

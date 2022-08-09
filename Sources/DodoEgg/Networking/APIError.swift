@@ -11,5 +11,6 @@ public enum APIError: Error {
     case invalidURL
     case noData
     case network
+    case cancelled
     case unknown
 }
