@@ -80,6 +80,8 @@ extension APIClient {
                     } catch {
                         fatalError("Can't encode HTTP body")
                     }
+                } else if let text = parameters as? String {
+                    urlRequest.httpBody = text.data(using: .utf8)
                 } else {
                     let postParameters = try URLQueryItemEncoder.encode(parameters)
                     let components = postParameters.map({String(format: "%@=%@", $0.name, $0.value ?? "")})
