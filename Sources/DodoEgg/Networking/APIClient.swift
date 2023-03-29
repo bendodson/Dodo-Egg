@@ -78,7 +78,7 @@ extension APIClient {
                     do {
                         urlRequest.httpBody = try JSONEncoder().encode(parameters)
                     } catch {
-                        fatalError("Can't encode HTTP body")
+                        fatalError("Can't encode HTTP body: \(error)")
                     }
                 } else if let text = parameters as? String {
                     urlRequest.httpBody = text.data(using: .utf8)
