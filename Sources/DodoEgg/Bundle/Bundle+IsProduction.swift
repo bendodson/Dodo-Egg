@@ -10,7 +10,7 @@ import Foundation
 extension Bundle {
     
     /// Is the app an App Store build (true) or a TestFlight, Ad Hoc, or Debug build (false)
-    var isProduction: Bool {
+    public var isProduction: Bool {
         #if DEBUG
             return false
         #else
