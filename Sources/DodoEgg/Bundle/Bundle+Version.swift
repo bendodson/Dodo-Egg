@@ -6,8 +6,7 @@ extension Bundle {
     
     /// App Version i.e. 2.0.1
     public var version: String {
-        var version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-        return version
+        return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
     }
     
     /// Bundle Number i.e. 1
