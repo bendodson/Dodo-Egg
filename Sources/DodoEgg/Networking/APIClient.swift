@@ -11,7 +11,9 @@ public protocol APIClient: AnyObject {
     var defaultQueryStringParameters: [URLQueryItem] { get }
     var defaultHeaders: [String: String] { get }
     var includeTrailingSlash: Bool { get }
+    var jsonDecoder: JSONDecoder { get }
     var jsonEncoder: JSONEncoder { get }
+
 }
 
 public struct APIResponse {
@@ -50,6 +52,13 @@ extension APIClient {
 
     public var jsonEncoder: JSONEncoder {
         return JSONEncoder()
+    }
+
+    public var jsonDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        decoder.dateDecodingStrategy = .iso8601
+        return decoder
     }
 
     @available(iOS 15.0, *)
@@ -252,11 +261,8 @@ extension APIClient {
     }
     
     private func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        decoder.dateDecodingStrategy = .iso8601
         do {
-            let object = try decoder.decode(type, from: data)
+            let object = try jsonDecoder.decode(type, from: data)
             return object
         } catch {
             throw APIError.decoding(reason: (error as NSError).debugDescription, data: data)
