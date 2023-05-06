@@ -11,6 +11,7 @@ public protocol APIClient: AnyObject {
     var defaultQueryStringParameters: [URLQueryItem] { get }
     var defaultHeaders: [String: String] { get }
     var includeTrailingSlash: Bool { get }
+    var jsonEncoder: JSONEncoder { get }
 }
 
 public struct APIResponse {
@@ -47,6 +48,10 @@ extension APIClient {
         return url
     }
 
+    public var jsonEncoder: JSONEncoder {
+        return JSONEncoder()
+    }
+
     @available(iOS 15.0, *)
     public func send<T:APIRequest, D:Decodable>(_ request: T, andDecodeTo decodeType: D.Type) async throws -> D {
         let response = try await send(request)
@@ -76,7 +81,7 @@ extension APIClient {
             do {
                 if urlRequest.allHTTPHeaderFields?["Content-Type"] == "application/json" {
                     do {
-                        urlRequest.httpBody = try JSONEncoder().encode(parameters)
+                        urlRequest.httpBody = try jsonEncoder.encode(parameters)
                     } catch {
                         fatalError("Can't encode HTTP body: \(error)")
                     }
@@ -151,7 +156,7 @@ extension APIClient {
             do {
                 if urlRequest.allHTTPHeaderFields?["Content-Type"] == "application/json" {
                     do {
-                        urlRequest.httpBody = try JSONEncoder().encode(parameters)
+                        urlRequest.httpBody = try jsonEncoder.encode(parameters)
                     } catch {
                         fatalError("Can't encode HTTP body")
                     }
