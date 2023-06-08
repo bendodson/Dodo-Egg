@@ -61,7 +61,7 @@ extension APIClient {
         return decoder
     }
 
-    @available(iOS 15.0, *)
+    @available(iOS 13.2, *)
     public func send<T:APIRequest, D:Decodable>(_ request: T, andDecodeTo decodeType: D.Type) async throws -> D {
         let response = try await send(request)
         guard let data = response.data else {
@@ -70,7 +70,7 @@ extension APIClient {
         return try decode(D.self, from: data)
     }
 
-    @available(iOS 15.0, *)
+    @available(iOS 13.2, *)
     public func send<T:APIRequest>(_ request: T) async throws -> APIResponse {
         let url = endpoint(for: request)
         os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, url as CVarArg)
