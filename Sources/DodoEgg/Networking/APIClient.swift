@@ -201,10 +201,8 @@ extension APIClient {
                 }
                 
                 switch httpResponse.statusCode {
-                case 200:
+                case 200...204:
                     completionHandler(.success(data))
-                case 201...204:
-                    completionHandler(.success(nil))
                 case 400...499:
                     completionHandler(.failure(.request(response: data)))
                 case 500...599:
