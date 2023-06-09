@@ -133,7 +133,7 @@ extension APIClient {
             case NSURLErrorCancelled:
                 throw APIError.cancelled
             default:
-                throw APIError.unknown
+                throw error
             }
         }
     }
