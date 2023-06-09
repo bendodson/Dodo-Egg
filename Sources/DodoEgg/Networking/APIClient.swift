@@ -120,7 +120,7 @@ extension APIClient {
             case 200...204:
                 return APIResponse(data: data, httpStatusCode: httpResponse.statusCode)
             case 400...499:
-                throw APIError.request(response: data)
+                throw APIError.request(data: data, httpStatusCode: httpResponse.statusCode)
             case 500...599:
                 throw APIError.server
             default:
@@ -204,7 +204,7 @@ extension APIClient {
                 case 200...204:
                     completionHandler(.success(data))
                 case 400...499:
-                    completionHandler(.failure(.request(response: data)))
+                    completionHandler(.failure(.request(data: data, httpStatusCode: httpResponse.statusCode)))
                 case 500...599:
                     completionHandler(.failure(.server))
                 default:
