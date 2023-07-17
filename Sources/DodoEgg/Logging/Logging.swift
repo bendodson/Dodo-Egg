@@ -21,7 +21,7 @@ public enum DebugLogLevel: String {
     case error
 }
 
-public struct DebugMessage {
+public struct DebugLog {
     public let date: Date
     public let category: String
     public let level: DebugLogLevel
