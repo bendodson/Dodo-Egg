@@ -1,7 +1,6 @@
 // Developed by Ben Dodson (ben@bendodson.com)
 
 import Foundation
-import os.log
 
 public protocol APIClient: AnyObject {
     @available(*, deprecated)
@@ -13,7 +12,6 @@ public protocol APIClient: AnyObject {
     var includeTrailingSlash: Bool { get }
     var jsonDecoder: JSONDecoder { get }
     var jsonEncoder: JSONEncoder { get }
-
 }
 
 public struct APIResponse {
@@ -73,7 +71,8 @@ extension APIClient {
     @available(iOS 13.2, *)
     public func send<T:APIRequest>(_ request: T) async throws -> APIResponse {
         let url = endpoint(for: request)
-        os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, url as CVarArg)
+        
+        SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
 
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -102,7 +101,7 @@ extension APIClient {
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
                 if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, string)
+                    SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
@@ -148,7 +147,10 @@ extension APIClient {
     @available(*, deprecated, renamed: "send()")
     public func send<T: APIRequest>(_ request: T, onCompletion completionHandler: @escaping APIHandler) {
         let url = endpoint(for: request)
-        os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, url as CVarArg)
+        
+        //logHandler?()
+        
+        SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -175,7 +177,7 @@ extension APIClient {
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
                 if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    os_log("%@: %@", log: OSLog.networking, type: .info, request.requestType.rawValue, string)
+                    SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
