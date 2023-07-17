@@ -7,11 +7,14 @@ public struct SageOfDebugging {
     
     public static var shared = SageOfDebugging()
     
+    public var injectedLogWriters: [LogWriter] = []
+    
     public lazy var logger: Willow.Logger = {
         var writers = [LogWriter]()
         #if DEBUG
             writers.append(SageConsoleWriter())
         #endif
+        writers.append(contentsOf: injectedLogWriters)
         return Logger(logLevels: [.all], writers: writers)
     }()
     
