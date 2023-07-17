@@ -1,6 +1,7 @@
 // Developed by Ben Dodson (ben@bendodson.com)
 
 import Foundation
+import UIKit
 import Willow
 
 public struct SageOfDebugging {
@@ -16,6 +17,10 @@ public struct SageOfDebugging {
         #endif
         writers.append(contentsOf: injectedLogWriters)
         return Logger(logLevels: [.all], writers: writers)
+    }()
+    
+    public lazy var device: String = {
+        return "v\(Bundle.main.version) (\(Bundle.main.buildNumber)) | \(UIDevice.current.systemName) \(UIDevice.current.systemVersion) | \(Bundle.main.modelIdentifier)"
     }()
     
     public lazy var dateFormatter: DateFormatter = {
