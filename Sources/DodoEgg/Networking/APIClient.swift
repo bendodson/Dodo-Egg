@@ -121,14 +121,14 @@ extension APIClient {
             case 400...499:
                 throw APIError.request(data: data, httpStatusCode: httpResponse.statusCode)
             case 500...599:
-                throw APIError.server
+                throw APIError.server(data: data, httpStatusCode: httpResponse.statusCode)
             default:
-                throw APIError.unexpectedStatusCode
+                throw APIError.unexpectedStatusCode(httpStatusCode: httpResponse.statusCode)
             }
         } catch {
             switch (error as NSError).code {
             case NSURLErrorTimedOut, NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorNetworkConnectionLost, NSURLErrorDNSLookupFailed, NSURLErrorHTTPTooManyRedirects, NSURLErrorResourceUnavailable, NSURLErrorNotConnectedToInternet, NSURLErrorRedirectToNonExistentLocation:
-                throw APIError.network
+                throw APIError.network(errorCode: (error as NSError).code)
             case NSURLErrorCancelled:
                 throw APIError.cancelled
             default:
@@ -190,7 +190,7 @@ extension APIClient {
                     let networkFailures: [Int] = [NSURLErrorTimedOut, NSURLErrorCannotFindHost, NSURLErrorCannotConnectToHost, NSURLErrorNetworkConnectionLost, NSURLErrorDNSLookupFailed, NSURLErrorHTTPTooManyRedirects, NSURLErrorResourceUnavailable, NSURLErrorNotConnectedToInternet, NSURLErrorRedirectToNonExistentLocation]
                     
                     if networkFailures.contains((error as NSError).code) {
-                        completionHandler(.failure(.network))
+                        completionHandler(.failure(.network(errorCode: (error as NSError).code)))
                     } else {
                         completionHandler(.failure(.unknown))
                     }
@@ -208,9 +208,9 @@ extension APIClient {
                 case 400...499:
                     completionHandler(.failure(.request(data: data, httpStatusCode: httpResponse.statusCode)))
                 case 500...599:
-                    completionHandler(.failure(.server))
+                    completionHandler(.failure(.server(data: data, httpStatusCode: httpResponse.statusCode)))
                 default:
-                    completionHandler(.failure(.unexpectedStatusCode))
+                    completionHandler(.failure(.unexpectedStatusCode(httpStatusCode: httpResponse.statusCode)))
                 }
             })
         })
