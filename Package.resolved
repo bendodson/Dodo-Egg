@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "willow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Nike-Inc/Willow.git",
+      "state" : {
+        "revision" : "25fa213596658d0e47ac1a4e598daaf9ca7e479a",
+        "version" : "6.1.0"
+      }
+    }
+  ],
+  "version" : 2
+}
