@@ -1,7 +1,9 @@
 // Developed by Ben Dodson (ben@bendodson.com)
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
+#endif
 import Willow
 
 public struct SageOfDebugging {
@@ -20,7 +22,11 @@ public struct SageOfDebugging {
     }()
     
     public lazy var device: String = {
+        #if os(macOS)
+        return "v\(Bundle.main.version) (\(Bundle.main.buildNumber)) | macOS \(ProcessInfo.processInfo.operatingSystemVersion) | \(Bundle.main.modelIdentifier)"
+        #else
         return "v\(Bundle.main.version) (\(Bundle.main.buildNumber)) | \(UIDevice.current.systemName) \(UIDevice.current.systemVersion) | \(Bundle.main.modelIdentifier)"
+        #endif
     }()
     
     public lazy var dateFormatter: DateFormatter = {
