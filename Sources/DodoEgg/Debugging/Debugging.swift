@@ -6,9 +6,12 @@ import UIKit
 #endif
 import Willow
 
-public struct SageOfDebugging {
+@available(*, deprecated)
+typealias SageOfDebugging = Debugging
+
+public struct Debugging {
     
-    public static var shared = SageOfDebugging()
+    public static var shared = Debugging()
     
     public var injectedLogWriters: [LogWriter] = []
     
@@ -124,7 +127,7 @@ class SageConsoleWriter: LogWriter {
         guard let log = message as? DebugLog else { return }
         var components = [String]()
         components.append("🪶")
-        components.append(SageOfDebugging.shared.dateFormatter.string(from: log.date))
+        components.append(Debugging.shared.dateFormatter.string(from: log.date))
         components.append("[\(log.category)]")
         if logLevel == .error || logLevel == .warn {
             components.append("⚠️")

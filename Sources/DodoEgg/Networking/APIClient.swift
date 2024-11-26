@@ -72,7 +72,7 @@ extension APIClient {
     public func send<T:APIRequest>(_ request: T) async throws -> APIResponse {
         let url = endpoint(for: request)
         
-        SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
+        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
 
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -101,7 +101,7 @@ extension APIClient {
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
                 if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
+                    Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
@@ -150,7 +150,7 @@ extension APIClient {
         
         //logHandler?()
         
-        SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
+        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
@@ -177,7 +177,7 @@ extension APIClient {
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
                 if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    SageOfDebugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
+                    Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
