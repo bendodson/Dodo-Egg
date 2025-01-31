@@ -18,6 +18,7 @@ public protocol APIRequest: Hashable {
     var queryStringParameters: QueryStringParameters? { get }
     var postParameters: PostParameters? { get }
     var headers: [String: String] { get }
+    var arePostParametersRedacted: Bool { get }
 }
 
 extension APIRequest {
@@ -40,6 +41,10 @@ extension APIRequest {
     
     public var headers: [String: String] {
         return [:]
+    }
+    
+    public var arePostParametersRedacted: Bool {
+        return false
     }
 }
 
