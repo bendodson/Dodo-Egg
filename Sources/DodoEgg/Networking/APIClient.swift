@@ -100,8 +100,12 @@ extension APIClient {
                     let components = postParameters.map({String(format: "%@=%@", $0.name, $0.value ?? "")})
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
-                if !request.arePostParametersRedacted, let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
-                    Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
+                if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
+                    if request.arePostParametersRedacted {
+                        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [REDACTED]")
+                    } else {
+                        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
+                    }
                 }
             } catch {
                 fatalError("Error on encoding passedQueryStringParameters: \(error)")
