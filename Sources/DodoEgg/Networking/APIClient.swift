@@ -109,7 +109,7 @@ extension APIClient {
                     if request.arePostParametersRedacted {
                         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [REDACTED]")
                     } else if data.count > maximumPostBodyLengthForDebugger {
-                        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [Exceeds maximumPostBodyLengthForDebugger]")
+                        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [\(data.count) exceeds maximumPostBodyLengthForDebugger of \(maximumPostBodyLengthForDebugger)]")
                     } else if let string = String(data: data, encoding: .utf8) {
                         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                     }
