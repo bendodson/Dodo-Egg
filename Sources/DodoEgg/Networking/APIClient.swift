@@ -60,7 +60,7 @@ extension APIClient {
         return decoder
     }
     
-    public var : Int {
+    public var maximumPostBodyLengthForDebugger: Int {
         return 1024 * 10 // 10kb
     }
 
