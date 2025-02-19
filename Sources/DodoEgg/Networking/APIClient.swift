@@ -12,6 +12,7 @@ public protocol APIClient: AnyObject {
     var includeTrailingSlash: Bool { get }
     var jsonDecoder: JSONDecoder { get }
     var jsonEncoder: JSONEncoder { get }
+    var maximumPostBodyLengthForDebugger: Int { get }
 }
 
 public struct APIResponse {
@@ -58,6 +59,10 @@ extension APIClient {
         decoder.dateDecodingStrategy = .iso8601
         return decoder
     }
+    
+    public var : Int {
+        return 1024 * 10 // 10kb
+    }
 
     @available(iOS 13.2, tvOS 15.0, macOS 12.0, *)
     public func send<T:APIRequest, D:Decodable>(_ request: T, andDecodeTo decodeType: D.Type) async throws -> D {
@@ -100,10 +105,12 @@ extension APIClient {
                     let components = postParameters.map({String(format: "%@=%@", $0.name, $0.value ?? "")})
                     urlRequest.httpBody = components.joined(separator: "&").data(using: .utf8)
                 }
-                if let data = urlRequest.httpBody, let string = String(data: data, encoding: .utf8) {
+                if let data = urlRequest.httpBody {
                     if request.arePostParametersRedacted {
                         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [REDACTED]")
-                    } else {
+                    } else if data.count > maximumPostBodyLengthForDebugger {
+                        Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): [Exceeds maximumPostBodyLengthForDebugger]")
+                    } else if let string = String(data: data, encoding: .utf8) {
                         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(string)")
                     }
                 }
