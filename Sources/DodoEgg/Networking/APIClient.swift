@@ -13,6 +13,7 @@ public protocol APIClient: AnyObject {
     var jsonDecoder: JSONDecoder { get }
     var jsonEncoder: JSONEncoder { get }
     var maximumPostBodyLengthForDebugger: Int { get }
+    var timeoutInterval: TimeInterval { get }
 }
 
 public struct APIResponse {
@@ -63,6 +64,10 @@ extension APIClient {
     public var maximumPostBodyLengthForDebugger: Int {
         return 1024 * 10 // 10kb
     }
+    
+    public var timeoutInterval: TimeInterval {
+        return 60
+    }
 
     @available(iOS 13.2, tvOS 15.0, macOS 12.0, *)
     public func send<T:APIRequest, D:Decodable>(_ request: T, andDecodeTo decodeType: D.Type) async throws -> D {
@@ -80,6 +85,7 @@ extension APIClient {
         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
 
         let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = timeoutInterval
         let session = URLSession(configuration: config)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.requestType.rawValue
@@ -164,6 +170,7 @@ extension APIClient {
         Debugging.log(.networking, level: .info, message: "\(request.requestType.rawValue): \(url)")
         
         let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = timeoutInterval
         let session = URLSession(configuration: config)
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.requestType.rawValue
