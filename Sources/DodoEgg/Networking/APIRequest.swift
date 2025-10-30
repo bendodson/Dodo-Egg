@@ -6,6 +6,7 @@ public enum APIRequestType: String {
     case get = "GET"
     case post = "POST"
     case delete = "DELETE"
+    case patch = "PATCH"
 }
 
 public protocol APIRequest: Hashable {
