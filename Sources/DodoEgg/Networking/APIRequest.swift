@@ -48,6 +48,10 @@ extension APIRequest {
     public var arePostParametersRedacted: Bool {
         return false
     }
+    
+    public var ignoreDefaultQueryStringParameters: Bool {
+        return false
+    }
 }
 
 open class APIRequestContainer<T: APIRequest> {
