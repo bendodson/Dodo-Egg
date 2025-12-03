@@ -250,7 +250,11 @@ extension APIClient {
             }
         }
         
-        let queryItems = defaultQueryStringParameters + passedQueryStringParameters
+        var queryItems = [URLQueryItem]()
+        if !request.ignoreDefaultQueryStringParameters {
+            queryItems.append(contentsOf: defaultQueryStringParameters)
+        }
+        queryItems.append(contentsOf: passedQueryStringParameters)
         components.queryItems = queryItems.count > 0 ? queryItems : nil
         guard let url = components.url else {
             fatalError("Unable to create url from components: \(components)")

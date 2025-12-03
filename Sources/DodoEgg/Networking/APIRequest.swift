@@ -20,6 +20,7 @@ public protocol APIRequest: Hashable {
     var postParameters: PostParameters? { get }
     var headers: [String: String] { get }
     var arePostParametersRedacted: Bool { get }
+    var ignoreDefaultQueryStringParameters: Bool { get }
 }
 
 extension APIRequest {
